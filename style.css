@@ -1,0 +1,91 @@
+/*
+Theme Name:     Design for Equality (child theme of Smarald)
+Template:       _smarald                             
+Version:        1.0
+*/
+
+@import url("../_smarald/style.css");
+
+/* ----- Utilities ----- */
+
+.caps {
+	text-transform: uppercase;
+}
+
+/* ----- Page layout ----- */
+
+.col-left {
+	padding-right: 2.5%;
+}
+
+.col-right {
+	padding-left: 2.5%;
+}
+
+/* ----- Submit form ----- */
+
+#digital-invisibles-submit label {
+	display: inline-block;
+	margin-right: -4px;
+	padding-right: 5%;
+	text-align: right;
+	vertical-align: middle;
+	width: 30%;
+}
+
+#digital-invisibles-submit input[type="text"],
+#digital-invisibles-submit input[type="email"],
+#digital-invisibles-submit textarea {
+	clear: none;
+	display: inline-block;
+	vertical-align: middle;
+	width: 65%;
+}
+
+#digital-invisibles-submit input[type="submit"] {
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	border-width: 1px;
+	display: block;
+	float: right;
+	margin-top: 1em;
+	min-width: 180px;
+	-webkit-transition: 0.2s;
+	-moz-transition: 0.2s;
+	-ms-transition: 0.2s;
+	-o-transition: 0.2s;
+	transition: 0.2s;
+}
+
+/* ----- Invisibles ----- */
+
+.invisible {
+	margin-bottom: 40px;
+}
+
+.invisible h3 {
+	border-bottom: 1px solid;
+}
+
+.edits {
+	color: #000;
+	font-family: 'Merriweather Sans', Arial, sans-serif;
+	font-weight: bold;
+	font-size: 40px;
+	text-transform: uppercase;
+}
+
+.strikethrough {
+	position: relative;
+}
+
+.strikethrough:after {
+	border-top: 2px solid #f42800;
+	content: "";
+	display: block;
+	left: 0;
+	position: absolute;
+	top: 0.6em;
+	width: 100%;
+}
