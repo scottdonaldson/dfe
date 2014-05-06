@@ -18,10 +18,10 @@ if ( isset($_POST['submit']) ) {
 	$invisible_name = htmlspecialchars($invisible_name);
 	$information = htmlspecialchars($information);
 
-	$email_to = 'scott.p.donaldson@gmail.com';
-	$email_subject = 'Digital Invisible: ' . $invisible_name;
-	$email_body = $submitter_name . ' (' . $submitter_email . ') submitted the following Digital Invisible:\n';
-	$email_body .= $invisible_name . '\n';
+	$email_to = "scott.p.donaldson@gmail.com";
+	$email_subject = "Digital Invisible: " . $invisible_name;
+	$email_body = $submitter_name . " (" . $submitter_email . ") submitted the following Digital Invisible:\n\n";
+	$email_body .= $invisible_name . "\n\n";
 	$email_body .= $information;
 
 	mail($email_to, $email_subject, $email_body);
@@ -30,13 +30,19 @@ if ( isset($_POST['submit']) ) {
 
 get_header(); the_post(); ?>
 
+	<script src="<?= get_stylesheet_directory_uri(); ?>/snap.js"></script>
+
 	<section id="primary" class="row-fluid">
 
 		<section id="content" class="span12">		
 
 			<section class="icy-slogan" style="border-bottom: 0;">
 				<h2 class="icy-slogan-title fadeInDown animated"><?php the_title(); ?></h2>
-			</section>		
+			</section>
+
+			<?php if (isset($_POST['submit'])) { ?>
+				<h3 class="red" style="text-align: center; margin-bottom: 30px;">Thanks for submitting! Be sure to check back here here for progress.</h3>
+			<?php } ?>
 
         	<article <?php post_class(); ?> id="post-<?php the_ID(); ?>">                       
 
@@ -44,11 +50,11 @@ get_header(); the_post(); ?>
 
 	            	<div class="the-content row-fluid">
 
-		            	<div class="span6 col-left">
+		            	<div class="span5 col-left">
 
 		            		<h2 class="caps">Submit an Invisible</h2>
 		            	
-							<form action="<?php the_permalink(); ?>" id="digital-invisibles-submit" method="POST">
+							<form action="<?php the_permalink(); ?>#primary" id="digital-invisibles-submit" method="POST">
 
 								<div class="row-fluid">
 									<label for="submitter-name">Your name</label>
@@ -75,34 +81,46 @@ get_header(); the_post(); ?>
 
 		            	</div>
 
-		            	<div class="span6 col-right">
+		            	<div class="span7 col-right">
 		            		<h2 class="caps">Invisibles</h2>
 
 		            		<p>Track the progress we have made to bring visibility to underrepresented characters of architectural history.</p>
 
-							<div class="invisible" data-wiki="Denise_Scott_Brown">
+							<div class="invisible row-fluid" data-wiki="Denise_Scott_Brown">
 								<h3>Denise Scott Brown</h3>
-								<div class="edits">Loading...</div>
+								<div class="edits">
+									<span>Loading...</span>
+									<small class="total-number caps">Total number of edits made</small>
+								</div>
 							</div>
 
-							<div class="invisible" data-wiki="Lina_Bo_Bardi">
+							<div class="invisible row-fluid" data-wiki="Lina_Bo_Bardi">
 								<h3>Lina Bo Bardi</h3>
-								<div class="edits">Loading...</div>
+								<div class="edits">
+									<span>Loading...</span>
+									<small class="total-number caps">Total number of edits made</small>
+								</div>
 							</div>
 
-							<div class="invisible" data-wiki="Jane_Jacobs">
+							<div class="invisible row-fluid" data-wiki="Jane_Jacobs">
 								<h3>Jane Jacobs</h3>
-								<div class="edits">Loading...</div>
+								<div class="edits">
+									<span>Loading...</span>
+									<small class="total-number caps">Total number of edits made</small>
+								</div>
 							</div>
 
-							<div class="invisible" data-wiki="Frank_Lloyd_Wright">
+							<div class="invisible row-fluid" data-wiki="Frank_Lloyd_Wright">
 								<h3>Frank Lloyd Wright</h3>
-								<div class="edits">Loading...</div>
+								<div class="edits">
+									<span>Loading...</span>
+									<small class="total-number caps">Total number of edits made</small>
+								</div>
 							</div>
 
-							<div class="invisible">
+							<div class="invisible row-fluid no-edits">
 								<h3><span class="strikethrough">Jane Doe</span></h3>
-								<div class="edits">Invisible</div>
+								<div class="edits"><span>Invisible</span></div>
 							</div>
 		            	</div>
 	                    

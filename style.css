@@ -6,7 +6,26 @@ Version:        1.0
 
 @import url("../_smarald/style.css");
 
+/* ----- Reset ----- */
+
+svg {
+	background-image: none;
+}
+
 /* ----- Utilities ----- */
+
+.red {
+	color: #f42800;
+}
+
+.fill-red {
+	fill: #f42800;
+}
+
+.fill-red:active,
+.fill-red:hover {
+	fill: #e21700;
+}
 
 .caps {
 	text-transform: uppercase;
@@ -21,6 +40,14 @@ Version:        1.0
 .col-right {
 	padding-left: 2.5%;
 }
+
+	@media screen and (max-width: 767px) {
+		.col-left,
+		.col-right {
+			padding-right: 0;
+			padding-left: 0;
+		}
+	}
 
 /* ----- Submit form ----- */
 
@@ -69,11 +96,33 @@ Version:        1.0
 }
 
 .edits {
-	color: #000;
-	font-family: 'Merriweather Sans', Arial, sans-serif;
-	font-weight: bold;
-	font-size: 40px;
+	float: left;
+	min-width: 90px;
 	text-transform: uppercase;
+}
+
+	.edits span {
+		border-bottom: 1px solid;
+		color: #000;
+		display: block;
+		font-family: 'Merriweather Sans', Arial, sans-serif;
+		font-weight: bold;
+		font-size: 40px;
+		margin-bottom: 6px;
+		padding-bottom: 12px;
+		text-align: center;
+	}
+
+	.no-edits .edits h3 {
+		border: 0;
+	}
+
+.total-number {
+	color: #000;
+	display: block;
+	line-height: 1.4;
+	text-transform: uppercase;
+	width: 100px;
 }
 
 .strikethrough {
@@ -88,4 +137,18 @@ Version:        1.0
 	position: absolute;
 	top: 0.6em;
 	width: 100%;
+}
+
+svg {
+	float: right;
+}
+
+#invisibles-modal {
+	background: #fff;
+	border: 1px solid #000;
+	padding: 10px;
+	position: fixed;
+	text-align: center;
+	width: 200px;
+	z-index: 9999;
 }
