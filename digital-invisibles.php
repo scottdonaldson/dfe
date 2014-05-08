@@ -86,45 +86,36 @@ get_header(); the_post(); ?>
 
 		            		<p>Track the progress we have made to bring visibility to underrepresented characters of architectural history.</p>
 
-							<div class="invisible row-fluid" data-wiki="Denise_Scott_Brown">
-								<h3>Denise Scott Brown</h3>
-								<div class="edits">
-									<span>Loading...</span>
-									<small class="total-number caps">Total number of edits made</small>
-								</div>
-							</div>
+		            		<?php
 
-							<div class="invisible row-fluid" data-wiki="Lina_Bo_Bardi">
-								<h3>Lina Bo Bardi</h3>
-								<div class="edits">
-									<span>Loading...</span>
-									<small class="total-number caps">Total number of edits made</small>
-								</div>
-							</div>
+		            		$invisibles = array(
+	            				'Denise Scott Brown' => 'Denise_Scott_Brown',
+	            				'Lina Bo Bardi' => 'Lina_Bo_Bardi',
+	            				'Jane Jacobs' => 'Jane_Jacobs',
+	            				'Frank Lloyd Wright' => 'Frank_Lloyd_Wright',
+	            				'Jane Doe' => false
+	            			);
 
-							<div class="invisible row-fluid" data-wiki="Jane_Jacobs">
-								<h3>Jane Jacobs</h3>
-								<div class="edits">
-									<span>Loading...</span>
-									<small class="total-number caps">Total number of edits made</small>
-								</div>
-							</div>
-
-							<div class="invisible row-fluid" data-wiki="Frank_Lloyd_Wright">
-								<h3>Frank Lloyd Wright</h3>
-								<div class="edits">
-									<span>Loading...</span>
-									<small class="total-number caps">Total number of edits made</small>
-								</div>
-							</div>
-
-							<div class="invisible row-fluid no-edits">
-								<h3><span class="strikethrough">Jane Doe</span></h3>
-								<div class="edits"><span>Invisible</span></div>
-							</div>
+		            		foreach ($invisibles as $invisible => $wiki) {
+		            			$invisible_class = $wiki ? 'invisible row-fluid' : 'invisible row-fluid no-edits';
+		            			$data_wiki = $wiki ? 'data-wiki="' . $wiki .'"' : '';
+		            			$h3_span_class = $wiki ? '' : 'strikethrough';
+			            		?>
+			            		<div class="<?= $invisible_class; ?>" <?= $data_wiki ?>>
+			            			<h3><span class="<?= $h3_span_class; ?>"><?= $invisible; ?></span></h3>
+			            			<div class="edits-and-graph">
+				            			<div class="edits">
+				            				<?php if ($wiki) { ?>
+				            					<span>Loading...</span>
+				            					<small class="total-number caps">Total number of edits made</small>
+				            				<?php } else { ?>
+				            					<span>Invisible</span>
+				            				<?php } ?>
+				            			</div>
+				            		</div>
+			            		</div>
+		            		<?php } ?>
 		            	</div>
-	                    
-						
 	                </div>
 	            </div>	
 
