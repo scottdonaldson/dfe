@@ -34,7 +34,7 @@ get_header(); the_post(); ?>
 
 	<section id="primary" class="row-fluid">
 
-		<section id="content" class="span12">		
+		<section id="content">		
 
 			<section class="icy-slogan" style="border-bottom: 0;">
 				<h2 class="icy-slogan-title fadeInDown animated"><?php the_title(); ?></h2>
@@ -48,9 +48,9 @@ get_header(); the_post(); ?>
 
 	            <div class="entry-content">
 
-	            	<div class="the-content row-fluid">
+	            	<div class="the-content">
 
-		            	<div class="span5 col-left">
+	            		<div class="row-fluid">
 
 		            		<h2 class="caps">Submit an Invisible</h2>
 		            	
@@ -81,7 +81,7 @@ get_header(); the_post(); ?>
 
 		            	</div>
 
-		            	<div class="span7 col-right">
+		            	<div class="row-fluid">
 		            		<h2 class="caps">Invisibles</h2>
 
 		            		<p>Track the progress we have made to bring visibility to underrepresented characters of architectural history.</p>
