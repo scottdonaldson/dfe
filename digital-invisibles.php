@@ -18,7 +18,7 @@ if ( isset($_POST['submit']) ) {
 	$invisible_name = htmlspecialchars($invisible_name);
 	$information = htmlspecialchars($information);
 
-	$email_to = "scott.p.donaldson@gmail.com";
+	$email_to = "arielleal@gmail.com, scott.p.donaldson@gmail.com";
 	$email_subject = "Digital Invisible: " . $invisible_name;
 	$email_body = $submitter_name . " (" . $submitter_email . ") submitted the following Digital Invisible:\n\n";
 	$email_body .= $invisible_name . "\n\n";
@@ -50,6 +50,7 @@ get_header(); the_post(); ?>
 
 	            	<div class="the-content">
 
+						<?php if (!isset($_POST['submit'])) { ?>
 	            		<div class="row-fluid">
 
 		            		<h2 class="caps">Submit an Invisible</h2>
@@ -80,6 +81,7 @@ get_header(); the_post(); ?>
 							</form>
 
 		            	</div>
+						<?php } ?>
 
 		            	<div class="row-fluid">
 		            		<h2 class="caps">Invisibles</h2>
@@ -124,7 +126,7 @@ get_header(); the_post(); ?>
 		</section>
 
 	</section>
-
+	
 	<script src="<?= get_stylesheet_directory_uri(); ?>/invisibles.js"></script>
 
 <?php get_footer(); ?>

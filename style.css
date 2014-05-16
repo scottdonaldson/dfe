@@ -26,7 +26,7 @@ svg {
 
 .fill-red:active,
 .fill-red:hover {
-	fill: #e21700;
+	fill: #d20700;
 }
 
 .caps {
@@ -69,11 +69,15 @@ svg {
 	width: 65%;
 }
 
-#digital-invisibles-submit input[type="submit"] {
+#digital-invisibles-submit input[type="submit"],
+button {
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
-	border-width: 1px;
+	border: 1px solid #f42800;
+	background: #fff;
+	color: #f42800;
+	cursor: pointer;
 	display: block;
 	float: right;
 	margin-top: 1em;
@@ -85,10 +89,18 @@ svg {
 	transition: 0.2s;
 }
 
+button.active,
+button:hover,
+button:active {
+	color: #fff;
+	background: #f42800;
+}
+
 /* ----- Invisibles ----- */
 
 .invisible {
 	margin-bottom: 40px;
+	min-height: 130px;
 }
 
 .invisible h3 {
@@ -128,8 +140,9 @@ svg {
 	color: #000;
 	display: block;
 	line-height: 1.4;
+	margin: 0 auto;
 	text-transform: uppercase;
-	width: 100px;
+	width: 92px;
 }
 
 .strikethrough {
@@ -146,14 +159,22 @@ svg {
 	width: 100%;
 }
 
-svg {
-	float: right;
+.over-last {
+	font-weight: normal;
+	font-size: 0.8em;
 }
 
 .graph-bar,
 .graph-bar-invisible {
 	position: relative;
 	z-index: 10;
+}
+
+.graph-bar-invisible:hover {
+	fill: #e2e2e2;
+}
+.graph-bar-invisible:hover + .graph-bar {
+	fill: #d20700;
 }
 
 #invisibles-modal {
@@ -179,3 +200,56 @@ svg {
 		width: 100px;
 	}
 }
+
+#choose-date-range {
+	background: #fff;
+	bottom: 0;
+	-webkit-box-shadow: 0 0 15px -5px #000;
+	-moz-box-shadow: 0 0 15px -5px #000;
+	box-shadow: 0 0 15px -5px #000;
+	left: 0;
+	padding: 20px 0;
+	position: fixed;
+	text-align: center;
+	width: 100%;
+	z-index: 9999;
+	-webkit-transition: bottom 0.2s;
+	-moz-transition: bottom 0.2s;
+	-ms-transition: bottom 0.2s;
+	-o-transition: bottom 0.2s;
+	transition: bottom 0.2s;
+}
+
+	#choose-date-range ul {
+		margin-left: 0;
+	}
+
+	#choose-date-range li {
+		float: left;
+		text-align: center;
+		width: 33.333%;
+	}
+
+	@media screen and (max-width: 450px) {
+		#choose-date-range ul {
+			text-align: center;
+		}
+
+		#choose-date-range li {
+			display: inline-block;
+			float: none;
+			padding: 0 5px;
+			width: auto;
+		}
+	}
+
+	#choose-date-range li button {
+		float: none;
+		margin: 0 auto;
+	}
+
+	@media screen and (max-width: 640px) {
+		#choose-date-range li button {
+			min-width: 0;
+		}
+	}
