@@ -8,3 +8,8 @@ function output_theme_css() { ?>
 <?php
 }
 add_action('wp_head', 'output_theme_css');
+
+
+// ----- Include Advanced Custom Fields
+include_once('functions/advanced-custom-fields/acf.php');
+include_once('functions/acf-repeater/acf-repeater.php');

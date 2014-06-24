@@ -83,31 +83,37 @@ get_header(); the_post(); ?>
 		            	</div>
 						<?php } ?>
 
+						<?php
+
+	            		$invisibles = get_field('invisibles');
+
+	            		if ($invisibles) { ?>
+
 		            	<div class="row-fluid">
 		            		<h2 class="caps">Invisibles</h2>
 
 		            		<p>Track the progress we have made to bring visibility to underrepresented characters of architectural history.</p>
 
-		            		<?php
+							<?php
+		            		foreach ($invisibles as $invisible) {
 
-		            		$invisibles = array(
-	            				'Denise Scott Brown' => 'Denise_Scott_Brown',
-	            				'Lina Bo Bardi' => 'Lina_Bo_Bardi',
-	            				'Jane Jacobs' => 'Jane_Jacobs',
-	            				'Frank Lloyd Wright' => 'Frank_Lloyd_Wright',
-	            				'Jane Doe' => false
-	            			);
+		            			if (function_exists('preg_filter')) {
+			           				$wiki_slug = $invisible['wiki_page'] ? preg_filter('/_|\W/', '', $invisible['wiki_page']) : '';
+			           			} else {
+			           				$wiki_slug = $invisible['wiki_page'] ? preg_replace('/_|\W/', '', $invisible['wiki_page']) : '';
+			           			}
+		           				if ( strlen($wiki_slug) === 0 ) { $wiki_slug = $invisible['wiki_page']; }
 
-		            		foreach ($invisibles as $invisible => $wiki) {
-		            			$invisible_class = $wiki ? 'invisible row-fluid' : 'invisible row-fluid no-edits';
-		            			$data_wiki = $wiki ? 'data-wiki="' . $wiki .'"' : '';
-		            			$h3_span_class = $wiki ? '' : 'strikethrough';
+		            			$invisible_class = $invisible['is_wiki_page'] ? 'invisible row-fluid' : 'invisible row-fluid no-edits';
+		            			$data_wiki = $invisible['wiki_page'] ? 'data-real-wiki="' . $invisible['wiki_page'] . '" data-wiki="' . $wiki_slug . '"' : '';
+		            			$h3_span_class = $invisible['is_wiki_page'] ? '' : 'strikethrough';
 			            		?>
+			            		
 			            		<div class="<?= $invisible_class; ?>" <?= $data_wiki ?>>
-			            			<h3><span class="<?= $h3_span_class; ?>"><?= $invisible; ?></span></h3>
+			            			<h3><span class="<?= $h3_span_class; ?>"><?= $invisible['name']; ?></span></h3>
 			            			<div class="edits-and-graph">
 				            			<div class="edits">
-				            				<?php if ($wiki) { ?>
+				            				<?php if ($invisible['is_wiki_page']) { ?>
 				            					<span>Loading...</span>
 				            					<small class="total-number caps">Total number of edits made</small>
 				            				<?php } else { ?>
@@ -118,6 +124,8 @@ get_header(); the_post(); ?>
 			            		</div>
 		            		<?php } ?>
 		            	</div>
+
+		            	<?php } ?>
 	                </div>
 	            </div>	
 
