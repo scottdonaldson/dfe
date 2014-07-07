@@ -35,7 +35,9 @@
 
 				$this.find('.edits span').html( commas(revisions.length.toString()) );
 
-				wiki[title.replace(/\W|_/g, '')] = revisions;
+				var t = title.replace(/\W|_/g, '');
+
+				wiki[t] = revisions;
 
 				buildGraphData(title);
 			}
@@ -67,20 +69,9 @@
 	$('[data-wiki]').each(getRevisions);
 
 	function setGraphHeight(graph, height) {
-
 		graph.attr({
-			height: +graph.attr('height') + (height > graph.attr('height') ? 1 : -1)
+			height: height
 		});
-		
-		if ( Math.abs(height - (+graph.attr('height'))) < 3 ) {
-			graph.attr({
-				height: height
-			});
-		} else {
-			setTimeout(function(){
-				setGraphHeight(graph, height);
-			}, 3);
-		}
 	}
 
 	function insertBar(graph, height, barX, barY, barWidth, barHeight, d, activeKey, dateString) {
@@ -125,13 +116,20 @@
 
 	function generateGraph(graph, activeKey) {
 
+		body.attr('data-displaying', activeKey);
+
 		var dates = graph.data('dates');
 
 		var title = $(graph.node).closest('.invisible').find('h3 span');
 		
 		title.find('.over-last').remove();
 
-		title.html( title.html() + '<span class="over-last"> - Edits over last ' + Object.keys(dates[activeKey]).length + ' ' + activeKey + '</span>' );
+		if ( activeKey === 'all' ) {
+			title.html( title.html() + '<span class="over-last"> - Edits since page creation</span>' );
+
+		} else {
+			title.html( title.html() + '<span class="over-last"> - Edits over last ' + Object.keys(dates[activeKey]).length + ' ' + activeKey + '</span>' );
+		}
 
 		var bars = graph.selectAll('.graph-bar'),
 			invisibleBars = graph.selectAll('.graph-bar-invisible');
@@ -145,7 +143,7 @@
 
 			var barHeight = 5 * dates[activeKey][d].length;
 
-			if ( barHeight > height) {
+			if ( barHeight > height + 40 ) {
 				height = barHeight + 40;
 			}
 
@@ -183,10 +181,17 @@
 					barWidth = graph.attr('width') / Object.keys(dates[activeKey]).length,
 					barHeight = 5 * dates[activeKey][d].length;
 
-				var dateString,
-					dateParts = d.split('-');
+				// one extra for the date
+				if ( activeKey === 'all' ) { barHeight -= 5; }
 
-				if ( activeKey === 'months' ) {
+					var dateString,
+						dateParts = d.split('-');
+
+				if ( activeKey === 'all' ) {
+					dateParts = dates[activeKey][d][0].split('-');
+				}
+
+				if ( activeKey === 'all' || activeKey === 'months' ) {
 					dateString = 'during ' + theMonths[(+dateParts[1]) - 1] + '&nbsp;' + dateParts[0];
 				} else if ( activeKey === 'days' ) {
 					dateString = 'on ' + theMonths[(+dateParts[1]) - 1] + '&nbsp;' + dateParts[2];
@@ -211,7 +216,7 @@
 				it++;
 			}
 
-		}, delay);
+		}, delay + 1);
 	}
 
 	function resizeGraphs() {
@@ -249,8 +254,6 @@
 			height = 0,
 			width = invisible.width();
 
-		console.log(invisible.length, title, graph);
-
 		if (graph) {
 			graph.attr({ 
 				height: height,
@@ -258,12 +261,14 @@
 			});
 
 			var dates = {
+				all: {},
 				months: {},
 				days: {},
 				hours: {}
 			};
 
 			var key;
+
 			// Build months object a la 2014-5, keeping in mind that we might be going back a year
 			for ( var m = theMonth; m > theMonth - 12; m-- ) {
 				key = m > 0 ? theYear + '-' + ((m + 12) % 12 || 12) : (theYear - 1) + '-' + ((m + 12) % 12 || 12);
@@ -312,13 +317,18 @@
 
 			var revisions = wiki[title];
 
-			for (var i = 0; i < revisions.length; i++) {
+			for ( var i = 0; i < revisions.length; i++ ) {
 
 				var date = new Date(revisions[i].timestamp),
 					year = date.getFullYear(),
 					month = date.getMonth() + 1,
 					day = date.getDay(),
 					hour = date.getHours();
+
+				if ( !dates['all'][year + '-' + month] ) { 
+					dates['all'][year + '-' + month] = [];
+				}
+				dates['all'][year + '-' + month].push(revisions[i]);
 
 				if ( dates.months[year + '-' + month] ) {
 					dates.months[year + '-' + month].push(revisions[i]);
@@ -333,6 +343,46 @@
 				}
 			}
 
+			// fill in blanks in "all"
+			for ( var mo in dates['all'] ) {
+				
+				mo = mo.split('-');
+
+				var y = +mo[0],
+					m = +mo[1];
+
+				var nextM = m === 12 ? 1 : m + 1,
+					nextY = nextM === 1 ? y + 1 : y;
+				if ( !dates['all'][nextY + '-' + nextM] && y !== theYear && m !== theMonth ) {
+					dates['all'][nextY + '-' + nextM] = [];
+				}
+			}
+			var cm = theMonth,
+				cy = theYear;
+			while ( true ) {
+				if ( !dates['all'][cy + '-' + cm] ) {
+					dates['all'][cy + '-' + cm] = [];
+				} else {
+					break;
+				}
+				if ( cm === 1 ) {
+					cm = 12;
+					cy--;
+				} else {
+					cm--;
+				}
+			}
+
+			dates['all'] = _.sortBy(dates['all'], function(n, v){ 
+				n.push(v);
+				n = n.reverse();
+				var t = v.split('-'),
+					sum;
+				t[0] = +t[0] * 12;
+				t[1] = +t[1];
+				sum = t[0] + t[1];
+				return -sum;
+			});
 			graph.data('dates', dates);
 
 			generateGraph(graph, 'months');
@@ -347,6 +397,8 @@
 		var $this = $(this),
 			numEdits = +this.getAttribute('data-edits'),
 			dateString = this.getAttribute('data-date-string');
+
+		if ( body.attr('data-displaying') === 'all' ) { numEdits = numEdits - 1; }
 
 		modal.show().html( commas(numEdits.toString()) + ' edit' + (numEdits === 1 ? '' : 's') + ' ' + dateString );
 	
@@ -382,8 +434,8 @@
 	function insertChooseDateRange() {
 		chooseDateRange.hide();
 
-		chooseDateRange.append('<h3>See all edits over the last:</h3>');
-		chooseDateRange.append('<ul class="clearfix"><li><button data-choose-date="hours">24 hours</button></li><li><button data-choose-date="days">30 days</button></li><li><button class="active" data-choose-date="months">12 months</button></li></ul>');
+		chooseDateRange.append('<h3>See edits over the last:</h3>');
+		chooseDateRange.append('<ul class="clearfix"><li><button data-choose-date="hours">24 hours</button></li><li><button data-choose-date="days">30 days</button></li><li><button class="active" data-choose-date="months">12 months</button></li><li><button data-choose-date="all">All time</button></li></ul>');
 		
 		body.append(chooseDateRange);
 

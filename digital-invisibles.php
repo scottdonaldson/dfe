@@ -30,6 +30,7 @@ if ( isset($_POST['submit']) ) {
 
 get_header(); the_post(); ?>
 
+	<script src="<?= get_stylesheet_directory_uri(); ?>/underscore.js"></script>
 	<script src="<?= get_stylesheet_directory_uri(); ?>/snap.js"></script>
 
 	<section id="primary" class="row-fluid">
