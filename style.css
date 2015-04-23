@@ -1,6 +1,6 @@
 /*
 Theme Name:     Design for Equality (child theme of Smarald)
-Template:       smarald                             
+Template:       smarald
 Version:        1.3
 */
 
@@ -52,8 +52,7 @@ svg {
 /* ----- Submit form ----- */
 
 #digital-invisibles-submit label {
-	display: inline-block;
-	margin-right: -4px;
+	float: left;
 	padding-right: 5%;
 	text-align: right;
 	vertical-align: middle;
